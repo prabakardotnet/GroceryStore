@@ -2,7 +2,7 @@
 
 namespace GroceryStore.Tests.Customers
 {
-    public class CustomersServiceTests
+    public class CustomerServiceTests
     {
         [Fact]
         public void CanListAllCustomers()
