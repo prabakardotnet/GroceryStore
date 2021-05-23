@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace GroceryStore.Application.Customers
@@ -6,28 +7,39 @@ namespace GroceryStore.Application.Customers
     public class CustomerService : ICustomerService
     {
         private ICustomerRepository _customerRepository;
-        public CustomerService(ICustomerRepository customerRepository)
+        private IMapper _mapper;
+        public CustomerService(ICustomerRepository customerRepository, IMapper mapper)
         {
             _customerRepository = customerRepository;
-        }
-        public int Add(Customer customer)
-        {
-            return _customerRepository.Add(customer);
+            _mapper = mapper;
         }
 
-        public Customer Get(int id)
+        public int Add(CustomerDto customerDto)
         {
-            return _customerRepository.Get(id);
+            Customer customer = _mapper.Map<Customer>(customerDto);
+            return  _customerRepository.Add(customer);
         }
 
-        public IEnumerable<Customer> List()
+        public CustomerDto Get(int id)
         {
-            return _customerRepository.List();
+            Customer customer = _customerRepository.Get(id);
+            return _mapper.Map<CustomerDto>(customer);
         }
 
-        public void Update(Customer customer)
+        public IEnumerable<CustomerDto> List()
         {
+            IEnumerable<Customer> customers = _customerRepository.List();
+            return _mapper.Map<IEnumerable<CustomerDto>>(customers);
+        }
+
+        public void Update(CustomerDto customerDto)
+        {
+            Customer customer = _mapper.Map<Customer>(customerDto);
             _customerRepository.Update(customer);
+        }
+        public bool Delete(int id)
+        {
+            return _customerRepository.Delete(id);
         }
     }
 }
