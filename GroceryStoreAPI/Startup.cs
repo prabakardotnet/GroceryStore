@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace GroceryStoreAPI
 {
     public class Startup
     {
+        private DataStore _dataStore;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,16 +24,22 @@ namespace GroceryStoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen( c=> { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
             services.AddAutoMapper(typeof(MapperProfile));
-            services.AddSingleton<IDataStore, DataStore>();
+            services.AddSingleton<IDataStore, DataStore>(op =>
+            {
+                _dataStore = new("database.json");
+                _dataStore.LoadData();
+                return _dataStore;
+            });
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<ICustomerService, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -46,6 +55,12 @@ namespace GroceryStoreAPI
             {
                 endpoints.MapControllers();
             });
+            
+        }
+
+        private void OnShutdown()
+        {
+            _dataStore?.PersistData();
         }
     }
 }

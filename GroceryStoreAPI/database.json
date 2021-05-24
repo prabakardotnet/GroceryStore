@@ -1,15 +1,28 @@
 {
-  "customers": [{
-      "id": 1,
-      "name": "Bob"
+  "Customers": [
+    {
+      "Id": 1,
+      "Name": "Bob"
     },
     {
-      "id": 2,
-      "name": "Mary"
+      "Id": 2,
+      "Name": "Mary"
     },
     {
-      "id": 3,
-      "name": "Joe"
+      "Id": 3,
+      "Name": "Ram"
+    },
+    {
+      "Id": 4,
+      "Name": "Prabakar"
+    },
+    {
+      "Id": 5,
+      "Name": "Raja"
+    },
+    {
+      "Id": 6,
+      "Name": "Deva"
     }
   ]
 }
