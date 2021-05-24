@@ -31,8 +31,11 @@ namespace GroceryStore.Application.Customers
 
         public void Update(Customer customer)
         {
-            Customer existingCustomer = Get(customer.Id);
-            existingCustomer.Name = customer.Name;
+            if (Exists(customer.Id))
+            {
+                Customer existingCustomer = Get(customer.Id);
+                existingCustomer.Name = customer.Name;
+            }
         }
 
         public bool Exists(int id)
