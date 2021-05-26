@@ -16,6 +16,7 @@ namespace GroceryStore.Application.Customers
             int customerId = _dataStore.Customers.Any() ? _dataStore.Customers.Max(c => c.Id) : 0;
             customer.Id = ++customerId;
             _dataStore.Customers.Add(customer);
+            _dataStore.SaveChanges();
             return customerId;
         }
 
@@ -35,6 +36,7 @@ namespace GroceryStore.Application.Customers
             {
                 Customer existingCustomer = Get(customer.Id);
                 existingCustomer.Name = customer.Name;
+                _dataStore.SaveChanges();
             }
         }
 
@@ -49,6 +51,7 @@ namespace GroceryStore.Application.Customers
             {
                 Customer customer = Get(id);
                 _dataStore.Customers.Remove(customer);
+                _dataStore.SaveChanges();
                 return true;
             }
             return false;

@@ -6,6 +6,7 @@ namespace GroceryStore.Application
 {
     public interface IDataStore
     {
+        void SaveChanges();
         IList<Customer> Customers { get; }
     }
 }

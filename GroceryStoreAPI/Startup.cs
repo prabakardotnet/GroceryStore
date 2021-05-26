@@ -60,7 +60,7 @@ namespace GroceryStoreAPI
 
         private void OnShutdown()
         {
-            _dataStore?.PersistData();
+            _dataStore?.SaveChanges();
         }
     }
 }

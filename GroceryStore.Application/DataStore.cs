@@ -32,7 +32,7 @@ namespace GroceryStore.Application
                 _database = JsonSerializer.Deserialize<Database>(File.ReadAllText(_dataFilePath),jsonSerializerOptions);
             }
         }
-        public void PersistData()
+        public void SaveChanges()
         {
             if (!string.IsNullOrEmpty(_dataFilePath) && File.Exists(_dataFilePath))
             {
