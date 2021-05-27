@@ -17,7 +17,14 @@ namespace GroceryStore.Application.Customers
         public int Add(CustomerDto customerDto)
         {
             Customer customer = _mapper.Map<Customer>(customerDto);
-            return  _customerRepository.Add(customer);
+            customer.Id = NewCustomerId();
+            _customerRepository.Add(customer);
+            return customer.Id;
+        }
+
+        private int NewCustomerId()
+        {
+            return _customerRepository.LastCustomerId() + 1;
         }
 
         public CustomerDto Get(int id)

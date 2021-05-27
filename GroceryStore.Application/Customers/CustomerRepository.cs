@@ -13,11 +13,14 @@ namespace GroceryStore.Application.Customers
 
         public int Add(Customer customer)
         {
-            int customerId = _dataStore.Customers.Any() ? _dataStore.Customers.Max(c => c.Id) : 0;
-            customer.Id = ++customerId;
             _dataStore.Customers.Add(customer);
             _dataStore.SaveChanges();
-            return customerId;
+            return customer.Id;
+        }
+
+        public int LastCustomerId()
+        {
+            return _dataStore.Customers.Any() ? _dataStore.Customers.Max(c => c.Id) : 0;
         }
 
         public Customer Get(int id)
