@@ -46,6 +46,10 @@ namespace GroceryStoreAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseRouting();
 
