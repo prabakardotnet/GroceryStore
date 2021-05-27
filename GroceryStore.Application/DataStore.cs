@@ -37,7 +37,11 @@ namespace GroceryStore.Application
             if (!string.IsNullOrEmpty(_dataFilePath) && File.Exists(_dataFilePath))
             {
                 JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-                JsonSerializer.Serialize(new Utf8JsonWriter(File.Create(_dataFilePath),new JsonWriterOptions { Indented = true}), _database, jsonSerializerOptions);
+                var fileStream = File.Create(_dataFilePath);
+                JsonSerializer.Serialize(new Utf8JsonWriter(fileStream, new JsonWriterOptions { Indented = true}), _database, jsonSerializerOptions);
+                fileStream.Flush();
+                fileStream.Close();
+                fileStream.Dispose();
             }
         }
     }

@@ -41,5 +41,10 @@ namespace GroceryStore.Application.Customers
         {
             return _customerRepository.Delete(id);
         }
+
+        public bool Exists(int id)
+        {
+            return _customerRepository.Exists(id);
+        }
     }
 }

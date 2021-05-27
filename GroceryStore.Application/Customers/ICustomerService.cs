@@ -9,5 +9,6 @@ namespace GroceryStore.Application.Customers
         int Add(CustomerDto customer);
         void Update(CustomerDto customer);
         bool Delete(int id);
+        bool Exists(int id);
     }
 }

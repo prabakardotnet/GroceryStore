@@ -31,9 +31,10 @@ namespace GroceryStoreAPI.Controllers
 
         // POST api/<CustomersController>
         [HttpPost]
-        public void Post([FromBody] CustomerDto customerDto)
+        public IActionResult Post([FromBody] CustomerDto customerDto)
         {
-            _customerService.Add(customerDto);
+            int newId = _customerService.Add(customerDto);
+            return CreatedAtAction(nameof(Get), new { CustomerId = newId });
         }
 
         // PUT api/<CustomersController>/5
@@ -45,9 +46,12 @@ namespace GroceryStoreAPI.Controllers
 
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
-        private void Delete(int id)
+        private IActionResult Delete(int id)
         {
+            if (!_customerService.Exists(id))
+                return NotFound();
             _customerService.Delete(id);
+            return NoContent();
         }
     }
 }
