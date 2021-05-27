@@ -1,4 +1,16 @@
-﻿namespace GroceryStore.Application.Customers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GroceryStore.Application.Customers
 {
-    public record CustomerDto(int Id, string Name);
+    public record CustomerDto
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+        public CustomerDto()
+        {
+            Name = string.Empty;
+        }
+    }
 }

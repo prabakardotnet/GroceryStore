@@ -1,4 +1,5 @@
 ﻿using GroceryStore.Application.Customers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -24,22 +25,30 @@ namespace GroceryStoreAPI.Controllers
 
         // GET api/<CustomersController>/5
         [HttpGet("{id}")]
-        public CustomerDto Get(int id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<CustomerDto> Get(int id)
         {
+            if (!_customerService.Exists(id))
+                return NotFound();
             return _customerService.Get(id);
         }
 
         // POST api/<CustomersController>
         [HttpPost]
-        public IActionResult Post(CustomerDto customerDto)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<CustomerDto> Post(CustomerDto customerDto)
         {
             int newId = _customerService.Add(customerDto);
-            return CreatedAtAction(nameof(Get), new { CustomerId = newId });
+            return CreatedAtAction(nameof(Get), new { id = newId });
         }
 
         // PUT api/<CustomersController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, CustomerDto customerDto)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public ActionResult<CustomerDto> Put(int id, CustomerDto customerDto)
         {
             if (id != customerDto.Id)
                 return BadRequest();
@@ -51,6 +60,8 @@ namespace GroceryStoreAPI.Controllers
 
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         private IActionResult Delete(int id)
         {
             if (!_customerService.Exists(id))
