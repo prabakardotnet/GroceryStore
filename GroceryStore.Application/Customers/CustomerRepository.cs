@@ -25,6 +25,10 @@ namespace GroceryStore.Application.Customers
 
         public Customer Get(int id)
         {
+            if (!Exists(id))
+            {
+                return null;
+            }
             return _dataStore.Customers.First(c => c.Id == id);
         }
 

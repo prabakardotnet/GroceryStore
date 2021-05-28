@@ -16,7 +16,7 @@ namespace GroceryStore.Application
         private string _dataFilePath { get; set; }
         public DataStore()
         {
-            _dataFilePath = "database.json";
+            _dataFilePath = "";
             _database = new Database();
         }
         public DataStore(string dataFilePath)
